@@ -4,10 +4,12 @@ class Tree:
         self.Item = TreeItem(FirstVariable,0)
         self.len = 1
         pass
+
     def Add(self,variable : int,address : list):
         self.__Add__(self.Item,variable,address)
+        pass
 
-    def __Add__(self,item: TreeItem ,variable:int,address : list):
+    def __Add__(self,item: TreeItem , variable : int, address : list):
         if(address.__len__() == 1):
             match address[0]:
                 case 'L':

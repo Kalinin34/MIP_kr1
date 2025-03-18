@@ -31,6 +31,5 @@ def testDefaultItemAdd(path: list, numb, wlist: list):
         wlist.append([localNum,localpath])
         testDefaultItemAdd(localpath,localNum,wlist)
     pass
-TreeVisualization.Output_tree(testDefault(15552))
-
+TreeVisualization.Output_tree(testDefault(Instr.RandomVariablesForGame(10000,20000,5)[0]))
 s = Game(Instr.RandomVariablesForGame(10000,20000,5)[0])

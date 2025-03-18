@@ -33,5 +33,4 @@ def testDefaultItemAdd(path: list, numb, wlist: list):
     pass
 TreeVisualization.Output_tree(testDefault(15552))
 
-print(Instr.RandomVariablesForGame(10000,20000,5))
 s = Game(Instr.RandomVariablesForGame(10000,20000,5)[0])

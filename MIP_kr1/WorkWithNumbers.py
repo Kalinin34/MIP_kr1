@@ -1,9 +1,19 @@
 import random as Random
 
-def RandomVariablesForGame(min,max,length):
+def RandomVariablesForGame(minM,maxM,length):
     randArray = []
     while(randArray.__len__() <5):
-        v = Random.randrange(min,max)
-        if(v%2==0) and (v%3==0):
-            randArray.append(v)
+        Fnumber = 6
+        while True:
+            Fnumber *= Random.randint(2,3)
+            if(minM<Fnumber):
+                break
+        access = True
+        for x in randArray:
+            if x == Fnumber:
+                access = False;
+                pass
+            pass
+        if(maxM>Fnumber or access):
+            randArray.append(Fnumber)
     return randArray

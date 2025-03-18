@@ -32,5 +32,4 @@ class Tree:
                     else:
                         raise ValueError("Nepareizi ievadita addrese")
                     pass
-                    pass
         pass

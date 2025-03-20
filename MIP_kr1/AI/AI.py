@@ -192,6 +192,7 @@ class AI:
                 return tmp
         pass
 
+    #Generated ar ChatGPT
     def __alfabeta__(self,item: AITreeItem,alpha, beta):
         if(item.L == None and item.R == None):
             return item.AIvalue
@@ -221,14 +222,14 @@ class AI:
                 min_eval = min(min_eval, eval_L)
                 beta = min(beta, eval_L)
                 if beta <= alpha:
-                    return min_eval  # Prune the remaining branches
+                    return min_eval 
 
             if item.R is not None:
                 eval_R = self.__alfabeta__(item.R, alpha, beta)
                 min_eval = min(min_eval, eval_R)
                 beta = min(beta, eval_R)
                 if beta <= alpha:
-                    return min_eval  # Prune the remaining branches
+                    return min_eval 
 
             item.AIvalue = min_eval
             return min_eval

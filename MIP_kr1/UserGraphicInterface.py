@@ -4,7 +4,9 @@ import TreeVisualization
 import WorkWithNumbers
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from Tree import Tree
-
+def on_closing():
+    import sys
+    sys.exit()
 class GameSetupWindow(tk.Tk):
     def __init__(self,gameManager):
         self.a = 0;
@@ -14,8 +16,9 @@ class GameSetupWindow(tk.Tk):
         self.geometry("1000x600")  
         self.resizable(False, False)
 
-        self.first_player_var = tk.StringVar(value="none")
-        self.algorithm_var = tk.StringVar(value="none")
+
+        self.first_player_var = tk.StringVar()
+        self.algorithm_var = tk.StringVar()
 
         self.control_frame = tk.Frame(self, width=300, height=600)
         self.control_frame.pack(side=tk.LEFT, fill=tk.Y)
@@ -33,18 +36,24 @@ class GameSetupWindow(tk.Tk):
         self.number_buttons = []
 
         self.first_player_frame = tk.Frame(self.control_frame)
+        self.first_player_var.set("player")
         tk.Label(self.first_player_frame, text="Kurš sāk spēli?").pack()
-        tk.Radiobutton(self.first_player_frame, text="Spēlētājs", variable=self.first_player_var, 
-                       value="player", command=self.set_first_player).pack()
-        tk.Radiobutton(self.first_player_frame, text="Dators", variable=self.first_player_var, 
-                       value="computer", command=self.set_first_player).pack()
+        fr1 = tk.Radiobutton(self.first_player_frame, text="Spēlētājs", variable="1", 
+                       value="player", command=lambda: self.set_first_player('player'))
+        fr1.select()
+        fr1.pack()
+        tk.Radiobutton(self.first_player_frame, text="Dators", variable="1", 
+                       value="computer", command=lambda: self.set_first_player('computer')).pack()
 
+        self.algorithm_var.set("minimax")
         self.algorithm_frame = tk.Frame(self.control_frame)
         tk.Label(self.algorithm_frame, text="Izvēlieties datora algoritmu:").pack()
-        tk.Radiobutton(self.algorithm_frame, text="Minimaksa algoritms", variable=self.algorithm_var, 
-                       value="minimax", command=self.set_algorithm).pack()
-        tk.Radiobutton(self.algorithm_frame, text="Alfa-beta algoritms", variable=self.algorithm_var, 
-                       value="alpha_beta", command=self.set_algorithm).pack()
+        ar1 = tk.Radiobutton(self.algorithm_frame, text="Minimaksa algoritms", variable="2", 
+                       value="minimax", command=lambda: self.set_algorithm('minimax'))
+        ar1.select()
+        ar1.pack()
+        tk.Radiobutton(self.algorithm_frame, text="Alfa-beta algoritms", variable="2", 
+                       value="alpha_beta", command=lambda: self.set_algorithm('alfa_beta')).pack()
 
         self.start_button = tk.Button(self.control_frame, text="Sākt spēli", command=self.start_game, state="disabled")
 
@@ -85,6 +94,7 @@ class GameSetupWindow(tk.Tk):
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         self.canvas.draw()
 
+        self.protocol("WM_DELETE_WINDOW", on_closing)
         pass
 
     def start_game(self):
@@ -99,18 +109,18 @@ class GameSetupWindow(tk.Tk):
         self.current_number = self.selected_number
         self.gameManager.setAI(self.algorithm_var.get())
         #self.moves.append(self.current_number)
-        TreeVisualization.Output_tree(self.gameManager.Tree)
-        self.current_label.config(text=f"Pašreizējais skaitlis: { self.gameManager.currentVal}")
+
         self.gameManager.observe()
-        self.canvas.draw()
+        TreeVisualization.Output_tree(self.gameManager.Tree,self.gameManager.currentVal)
+        self.current_label.config(text=f"Pašreizējais skaitlis: { self.gameManager.currentVal}")
         self.update()
+        self.canvas.draw()
         if self.first_player_var.get() == "computer":
             self.after(500, self.computer_move)
         pass
 
     def make_move(self, divisor):
         if self.gameManager.currentVal % divisor == 0 and not self.gameManager.game_over:
-            self.current_label.config(text=f"Pašreizējais skaitlis: { self.gameManager.currentVal}")
             points = 1 if self.gameManager.currentVal % 2 == 0 else -1
             print(points)
 
@@ -126,8 +136,9 @@ class GameSetupWindow(tk.Tk):
                 self.gameManager.currentWay.append('R')
 
             self.gameManager.currentVal = self.gameManager.currentVal // divisor
+            self.current_label.config(text=f"Pašreizējais skaitlis: { self.gameManager.currentVal}")
             self.gameManager.observe()
-            TreeVisualization.Output_tree(self.gameManager.Tree)
+            TreeVisualization.Output_tree(self.gameManager.Tree,self.gameManager.currentVal)
             self.canvas.draw()
             self.update()
             if self.gameManager.currentVal in [2, 3]:
@@ -170,7 +181,7 @@ class GameSetupWindow(tk.Tk):
                 self.gameManager.currentWay.append('R')
 
             self.gameManager.observe()
-            TreeVisualization.Output_tree(self.gameManager.Tree)
+            TreeVisualization.Output_tree(self.gameManager.Tree,self.gameManager.currentVal)
             self.canvas.draw()
             self.update()
             if self.gameManager.currentVal in [2, 3]:
@@ -194,8 +205,6 @@ class GameSetupWindow(tk.Tk):
     def restart_game(self):
         self.game_over = False
         self.selected_number = None
-        self.first_player_var.set("none")
-        self.algorithm_var.set("none")
         self.current_number = 0
         self.player_points = 0
         self.computer_points = 0
@@ -218,14 +227,18 @@ class GameSetupWindow(tk.Tk):
         TreeVisualization.reset()
         self.canvas.draw()
 
-    def set_first_player(self):
-        if not self.algorithm_frame.winfo_ismapped():
-            self.algorithm_frame.pack(pady=10)
+    def set_first_player(self,first):
+        self.first_player_var.set(first)
+        # if not self.algorithm_frame.winfo_ismapped():
+        #     self.algorithm_frame.pack(pady=10)
+        pass
 
-    def set_algorithm(self):
-        if self.selected_number and self.first_player_var.get() != "none" and not self.start_button.winfo_ismapped():
-            self.start_button.config(state="normal")
-            self.start_button.pack(pady=20)
+    def set_algorithm(self,algrth):
+        self.first_player_var.set(algrth)
+        # if self.selected_number and self.first_player_var.get() != "none" and not self.start_button.winfo_ismapped():
+        #     # self.start_button.config(state="normal")
+        #     # self.start_button.pack(pady=20)
+        #     pass
 
     def generate_numbers(self):
         self.generate_button.pack_forget()
@@ -248,3 +261,6 @@ class GameSetupWindow(tk.Tk):
             btn.config(state="disabled")
         self.numbers_frame.pack_forget()
         self.first_player_frame.pack(pady=10)
+        self.algorithm_frame.pack(pady=10)
+        self.start_button.config(state="normal")
+        self.start_button.pack(pady=20)

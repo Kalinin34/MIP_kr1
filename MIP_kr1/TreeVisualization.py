@@ -16,48 +16,30 @@ def reset():
 
 reset()
 
-def Output_tree(tree):
+def Output_tree(tree,number):
+    reset()
     branches = branchFromTree(tree)
     currentBranc = []
     for i in range(len(branches)):
         if(branches[i]==None):
             continue
         isee = False
+        if(branches.__len__()>6):
+            print("debug")
         Id, parentId, x, y, value = branches[i]
-        if parentId !=-1:
-
-            isee = False
-            for b in currentBranc:
-                xT, yT, variable = b
-                if(variable == value):
-                    isee = True
-                    break;
-
-            _, _, xparent, yparent, Pvalue = branches[parentId]
-            if(isee):
-                x = xT
-                y = yT
-
-        if(~isee):
-            currentBranc.append([x,y,value])
-            circle = plt.Circle((x, y), 1.5,edgecolor='black', facecolor='white', fill=True, zorder=2)
-            ax.add_patch(circle)
+        if(value == 1):
+            continue
+        circle = plt.Circle((x, y), 1.5,edgecolor='black', facecolor='white', fill=True, zorder=2)
+        ax.add_patch(circle)
+        if(number == value):
+            ax.text(x, y, str(int(value)), color='blue', fontsize=10, ha='center', va='center', zorder=3)
+        else:
             ax.text(x, y, str(int(value)), color='black', fontsize=10, ha='center', va='center', zorder=3)
 
-        isee2 = True
-        if parentId !=-1:
-            _, _, _, _, pvalue = branches[parentId]
-            for b in currentBranc:
-                xT, yT, variable = b
-                if(variable == pvalue):
-                    isee2 = False
-                    xparent = xT
-                    yparent = yT
-                    break;
-
-            if(~isee2):
-                ax.plot([x, xparent], [y, yparent], 'k-', linewidth=2)
-                ax.text((x + xparent) / 2, (y + yparent) / 2, str(int(Pvalue/value)), color='red', fontsize=8, ha='center', va='center', bbox=dict(facecolor='white', edgecolor='red', boxstyle='round,pad=0.3'))
+        if(parentId !=-1):
+            _, _, xparent, yparent, Pvalue = branches[parentId]
+            ax.plot([x, xparent], [y, yparent], 'k-', linewidth=2,color='yellow')
+            ax.text((x + xparent) / 2, (y + yparent) / 2, str(int(Pvalue/value)), color='red', fontsize=8, ha='center', va='center', bbox=dict(facecolor='white', edgecolor='red', boxstyle='round,pad=0.3'))
                 
         #display(fig)
     #{id , parentId , x , y , value}
@@ -66,8 +48,8 @@ def branchFromTree(tree: Tree):
     sortedbranch = sorted(
         filter(lambda s: s, branch),
         key=lambda x: x[0])
-    freeBranch = space(sortedbranch)
-    return freeBranch
+    #freeBranch = space(sortedbranch)
+    return sortedbranch
 
 def space(branch: list):
     uniquebranch=[]

@@ -115,6 +115,7 @@ class GameSetupWindow(tk.Tk):
         self.current_label.config(text=f"Pašreizējais skaitlis: { self.gameManager.currentVal}")
         self.update()
         self.canvas.draw()
+        print(self.first_player_var.get())
         if self.first_player_var.get() == "computer":
             self.after(500, self.computer_move)
         pass
@@ -234,7 +235,7 @@ class GameSetupWindow(tk.Tk):
         pass
 
     def set_algorithm(self,algrth):
-        self.first_player_var.set(algrth)
+        self.algorithm_var.set(algrth)
         # if self.selected_number and self.first_player_var.get() != "none" and not self.start_button.winfo_ismapped():
         #     # self.start_button.config(state="normal")
         #     # self.start_button.pack(pady=20)

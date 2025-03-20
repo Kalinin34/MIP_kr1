@@ -32,7 +32,7 @@ def Output_tree(tree,number):
         circle = plt.Circle((x, y), 1.5,edgecolor='black', facecolor='white', fill=True, zorder=2)
         ax.add_patch(circle)
         if(number == value):
-            ax.text(x, y, str(int(value)), color='blue', fontsize=10, ha='center', va='center', zorder=3)
+            ax.text(x, y, str(int(value)), color='green', fontsize=10, ha='center', va='center', zorder=3)
         else:
             ax.text(x, y, str(int(value)), color='black', fontsize=10, ha='center', va='center', zorder=3)
 

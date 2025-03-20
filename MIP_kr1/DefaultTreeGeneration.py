@@ -1,9 +1,4 @@
-import array
-import WorkWithNumbers as Instr
-from GameManager import GameManager as Game
-import TreeVisualization
 from Tree import Tree
-from TreeItem import TreeItem
 
 def testDefault(num):
     tree = Tree(num)
@@ -31,8 +26,3 @@ def testDefaultItemAdd(path: list, numb, wlist: list):
         wlist.append([localNum,localpath])
         testDefaultItemAdd(localpath,localNum,wlist)
     pass
-
-#TreeVisualization.Output_tree(testDefault(Instr.RandomVariablesForGame(10000,20000,5)[0]))
-s = Game()
-s.initGUI()
-s.run()

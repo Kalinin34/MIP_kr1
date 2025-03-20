@@ -14,6 +14,6 @@ def RandomVariablesForGame(minM,maxM,length):
                 access = False;
                 pass
             pass
-        if(maxM>Fnumber or access):
+        if(maxM>Fnumber and access):
             randArray.append(Fnumber)
     return randArray

@@ -1,19 +1,22 @@
-from turtle import color
 import matplotlib.pyplot as plt
 import numpy as np
-from IPython.display import display, clear_output
 from matplotlib.pyplot import figure
 
 from Tree import Tree
 from TreeItem import TreeItem
 
-def Output_tree(tree: Tree):
-    plt.ion()  # # Interaktîvs reþims. - V J
-    fig, ax = plt.subplots(figsize=(14.4, 14.4), dpi=100) # # - Sçt ekrâna resolûciju uz 1440x1440 pxl. - V J
-    fig.patch.set_facecolor('lightgray')
+fig, ax = plt.subplots(figsize=(14.4, 14.4), dpi=100) # # - Sçt ekrâna resolûciju uz 1440x1440 pxl. - V J
+fig.patch.set_facecolor('lightgray')
+
+def reset():
+    ax.clear()
     ax.set_aspect('equal')
     ax.set_clip_on(False)
-    
+    ax.axis('off')
+
+reset()
+
+def Output_tree(tree):
     branches = branchFromTree(tree)
     currentBranc = []
     for i in range(len(branches)):
@@ -56,16 +59,14 @@ def Output_tree(tree: Tree):
                 ax.plot([x, xparent], [y, yparent], 'k-', linewidth=2)
                 ax.text((x + xparent) / 2, (y + yparent) / 2, str(int(Pvalue/value)), color='red', fontsize=8, ha='center', va='center', bbox=dict(facecolor='white', edgecolor='red', boxstyle='round,pad=0.3'))
                 
-        plt.pause(0.1)
-        display(fig)
-    
-    plt.ioff()
-    plt.show()
-
+        #display(fig)
     #{id , parentId , x , y , value}
 def branchFromTree(tree: Tree):
     branch = inTree([],tree.Item,-1,0,0,256)
-    freeBranch = space(branch)
+    sortedbranch = sorted(
+        filter(lambda s: s, branch),
+        key=lambda x: x[0])
+    freeBranch = space(sortedbranch)
     return freeBranch
 
 def space(branch: list):
@@ -92,6 +93,6 @@ def inTree(branches: list,item : TreeItem, parrentId:int,x,y,space):
     if item == None:
         return branches
     branches.append([item.index,parrentId,x,y,item.value])
-    L = inTree(branches,item.L,item.index,x-space,y - 50,space/2)
-    R = inTree(branches,item.R,item.index,x+space,y - 50,space/2)
+    L = inTree(branches,item.L,item.index,x-space,y - 50,space-3)
+    R = inTree(branches,item.R,item.index,x+space,y - 50,space-3)
     return branches

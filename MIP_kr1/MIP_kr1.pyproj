@@ -26,8 +26,6 @@
     <Compile Include="AI\AITree.py" />
     <Compile Include="AI\AITreeItem.py" />
     <Compile Include="AI\AiVisualisation.py" />
-    <Compile Include="AI\module1.py" />
-    <Compile Include="DefaultTreeGeneration.py" />
     <Compile Include="GameManager.py" />
     <Compile Include="MIP_kr1.py" />
     <Compile Include="Tree.py" />

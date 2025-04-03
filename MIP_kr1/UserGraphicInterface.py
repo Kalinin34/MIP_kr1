@@ -122,6 +122,13 @@ class GameSetupWindow(tk.Tk):
 
     def make_move(self, divisor):
         if self.gameManager.currentVal % divisor == 0 and not self.gameManager.game_over:
+            if(divisor == 2):
+                self.gameManager.currentWay.append('L')
+            else:
+                self.gameManager.currentWay.append('R')
+ 
+            self.gameManager.currentVal = self.gameManager.currentVal // divisor
+
             new_value = self.gameManager.currentVal
  
             if new_value % 2 == 0:
@@ -131,15 +138,8 @@ class GameSetupWindow(tk.Tk):
  
             if new_value % 5 == 0:
                 self.gameManager.Bank += 1
- 
             self.player_score.config(text=f"Spēlētāja punkti: {self.gameManager.player}")
             self.bank_score.config(text=f"Banka: {self.gameManager.Bank}")
-            if(divisor == 2):
-                self.gameManager.currentWay.append('L')
-            else:
-                self.gameManager.currentWay.append('R')
- 
-            self.gameManager.currentVal = self.gameManager.currentVal // divisor
             self.current_label.config(text=f"Pašreizējais skaitlis: { self.gameManager.currentVal}")
             self.gameManager.observe()
             TreeVisualization.Output_tree(self.gameManager.Tree,self.gameManager.currentVal)

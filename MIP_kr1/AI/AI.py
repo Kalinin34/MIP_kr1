@@ -49,9 +49,8 @@ class AI:
             else:
                 self.direction = False
 
-        # if(number < 700):
-        #     import AI.AiVisualisation
-        #     AI.AiVisualisation.Output_treeAI(self.AiTree)
+        # import AI.AiVisualisation
+        # AI.AiVisualisation.Output_treeAI(self.AiTree)
         # true = kreisi / false = labi
 
         pass

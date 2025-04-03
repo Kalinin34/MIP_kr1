@@ -1,13 +1,14 @@
 from AI.AITreeItem import AITreeItem
 from Tree import Tree
 
-
+#Koks modificçts lai darbotos ar MI 
 class AITree(Tree):
     def __init__(self, FirstVariable):
         self.Item = AITreeItem(FirstVariable,0)
         self.Item.minmax = 'x'
         self.len = 1
 
+    
     def Add(self,variable : int,address : list):
         self.__Add__(self.Item,variable,address)
         pass

@@ -1,9 +1,10 @@
 import random as Random
 
+#Nejauðo skaitïu ìenerçðana
 def RandomVariablesForGame(minM,maxM,length):
     randArray = []
     while(randArray.__len__() <5):
-        Fnumber = 6
+        Fnumber = 1
         while True:
             Fnumber *= Random.randint(2,3)
             if(minM<Fnumber):

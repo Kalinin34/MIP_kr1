@@ -5,20 +5,26 @@ from UserGraphicInterface import GameSetupWindow as Interface
 class GameManager:
     def __init__(self):
         self.reset()
-
+    
     def reset(self):
+        #skaitlis kas sakuma izvelas speletajs un kuru dala uz 3 vai 2
         self.currentVal = 0 
+        #speletaja punktu skaits
         self.player = 0 
+        #datora punktu skaits
         self.computer = 0 
+        #banka punktu skaits
         self.Bank = 0
+        #gajienu koks
         self.Tree = None
+        #mainîgais kurð saglaba adresi uz pedejo koka virsotni
         self.currentWay = []
+        #mainîgas kurð atbildîgs par speles statusu
         self.game_over = False
+        #MI ar minmax un alfabeta algoritmu
         self.AI = None
-    def robBank(self,player):
-        player += self.Bank
-        pass
 
+    #Pârada iespçjamas ceïas ar tagadejo skaitli
     def observe(self):
         item = self.Tree.Item
         localWay = list(self.currentWay)
@@ -48,12 +54,15 @@ class GameManager:
         self.Num = arr[index]
         pass
 
+    #Pievieno MI ar izveleto algoritmu
     def setAI(self,algoritms):
         self.AI = AI(algoritms)
-
+    
+    #Inicianalize interfeisu
     def initGUI(self):
         self.Uinterface = Interface(self)
         pass
+    #Iesledz GUI
     def run(self):
         self.Uinterface.mainloop()
 

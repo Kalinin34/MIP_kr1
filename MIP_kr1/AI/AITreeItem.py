@@ -5,7 +5,9 @@ from TreeItem import TreeItem
 class AITreeItem(TreeItem):
     def __init__(self, value, index):
         super().__init__(value, index)
+        #identifikators kurð kura stavokïa atrodas virsotne
         self.minmax = None
+        #skaitïa uzvares vai sakaves identifikators(vai -1...1) minimax algoritmam
         self.AIvalue = 0
 
     def setL(self,variable,index,minmax):

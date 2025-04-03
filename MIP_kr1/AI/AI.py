@@ -2,21 +2,28 @@
 import random
 from AI.AITree import AITree, AITreeItem
 
-
+#MI klase
 class AI:
+    #Inicializēšana
     def __init__(self,method):
         self.AiTree = None
         self.method = method
         pass
 
+    #metodes izvēlešana
     def thinking(self,number,AiScoreCount,playerScoreCount,bank):
         self.AiTree = AITree(number)
+        #Ģenere koku ar viesiem iespējamiem skaitliem
         self.__generateTree__(number)
         print(f"value = {number}")
 
         print(f"AiScoreCount = {AiScoreCount}, playerScoreCount= {playerScoreCount}")
+        
+        #Inicialize pedejos skaitļus (uzvari,neitrali,sakavi)
         self.__setEnding__(self.AiTree.Item,0,True,playerScoreCount,AiScoreCount,bank)
+        #Nakotnē izvelets skaitlis
         dirSum = 0
+        #Pēc izvēleta methodes algoritma izpildīšana
         match(self.method):
             case 'minimax':
                 dirSum = self.__minmaxMethod__(self.AiTree.Item)
@@ -26,7 +33,8 @@ class AI:
                 beta = float('inf')
                 dirSum = self.__alfabeta__(self.AiTree.Item,alpha,beta)
                 pass
-
+        
+        #ceļu izvēlēšana
         if(self.AiTree.Item.L is not None and self.AiTree.Item.R is None):
             self.direction = True
 
@@ -48,6 +56,7 @@ class AI:
 
         pass
 
+    #pavisam ģenere koku
     def __generateTree__(self,number):
         wlist = []
         self.__generateTreeItemAdd__([],number,wlist)
@@ -55,16 +64,19 @@ class AI:
             variable,address = wlist[i]
             self.AiTree.Add(variable,address)
         pass
-
+    
+    #koka virsotņu generacijas metode
     def __generateTreeItemAdd__(self,path: list, numb, wlist: list):
         if(numb==1):
             pass
+        #ja skaitlis dalas ar 2 tad ģenero kreiso zaru
         if(numb%2==0 and int(numb/2)!=1):
             localpath = path.copy()
             localNum = numb/2
             localpath.append('L')
             wlist.append([localNum,localpath])
             self.__generateTreeItemAdd__(localpath,localNum,wlist)
+        #ja skaitlis dalas ar 3 tad ģenero labo zaru
         if(numb%3==0 and int(numb/3)!=1):
             localpath = path.copy()
             localNum = numb/3
@@ -73,6 +85,7 @@ class AI:
             self.__generateTreeItemAdd__(localpath,localNum,wlist)
         pass
     
+    #iespejāmo soļu konstruēšana un min/max pievienošana
     def __setEnding__(self,item: AITreeItem, depth, solis, player, computer, bank):
         if(item.L == None and item.R == None):
             if(solis):
@@ -146,6 +159,7 @@ class AI:
             item.minmax = 'x'
         pass
 
+    #minmax metode
     def __minmaxMethod__(self,item: AITreeItem):
         if(item.L == None and item.R == None):
             return item.AIvalue
@@ -191,6 +205,7 @@ class AI:
                 return tmp
         pass
 
+    #alfabeta metode
     #Generated ar ChatGPT
     def __alfabeta__(self,item: AITreeItem,alpha, beta):
         if(item.L == None and item.R == None):

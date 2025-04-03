@@ -1,14 +1,17 @@
 from TreeItem import TreeItem
+
+#Koks
 class Tree:
     def __init__(self,FirstVariable):
         self.Item = TreeItem(FirstVariable,0)
         self.len = 1
         pass
 
+    #pievienoðana kokam elementu
     def Add(self,variable : int,address : list):
         self.__Add__(self.Item,variable,address)
         pass
-
+    #pievienoðana kokam elementu(iekðeja funkcija)
     def __Add__(self,item: TreeItem , variable : int, address : list):
         if(address.__len__() == 1):
             match address[0]:

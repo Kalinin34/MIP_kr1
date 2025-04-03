@@ -122,20 +122,23 @@ class GameSetupWindow(tk.Tk):
 
     def make_move(self, divisor):
         if self.gameManager.currentVal % divisor == 0 and not self.gameManager.game_over:
-            points = 1 if self.gameManager.currentVal % 2 == 0 else -1
-            print(points)
-
-            if self.gameManager.currentVal % 5 == 0:
+            new_value = self.gameManager.currentVal
+ 
+            if new_value % 2 == 0:
+                self.gameManager.player += 1  
+            else:
+                self.gameManager.player -= 1  
+ 
+            if new_value % 5 == 0:
                 self.gameManager.Bank += 1
-
-            self.gameManager.player += points
+ 
             self.player_score.config(text=f"Spēlētāja punkti: {self.gameManager.player}")
             self.bank_score.config(text=f"Banka: {self.gameManager.Bank}")
             if(divisor == 2):
                 self.gameManager.currentWay.append('L')
             else:
                 self.gameManager.currentWay.append('R')
-
+ 
             self.gameManager.currentVal = self.gameManager.currentVal // divisor
             self.current_label.config(text=f"Pašreizējais skaitlis: { self.gameManager.currentVal}")
             self.gameManager.observe()
@@ -154,33 +157,37 @@ class GameSetupWindow(tk.Tk):
                 self.after(500, self.computer_move)
         else:
             self.status_label.config(text=f"Kļūda: Skaitli nevar dalīt ar {divisor}!")
-
+ 
     def computer_move(self):
         if(not self.gameManager.game_over):
             self.gameManager.AI.thinking(self.gameManager.currentVal,self.gameManager.computer,self.gameManager.player,self.gameManager.Bank)
-
+ 
             divisor = 0
             if(self.gameManager.AI.direction):
                 divisor = 2
             else:
                 divisor = 3
-
-            self.gameManager.currentVal = self.gameManager.currentVal // divisor
-            points = 1 if self.gameManager.currentVal % 2 == 0 else -1
-
-            if self.gameManager.currentVal % 5 == 0:
+ 
+            new_value = self.gameManager.currentVal // divisor
+            self.gameManager.currentVal = new_value
+ 
+            if new_value % 2 == 0:
+                self.gameManager.computer += 1
+            else:
+                self.gameManager.computer -= 1
+ 
+            if new_value % 5 == 0:
                 self.gameManager.Bank += 1
-
-            self.gameManager.computer += points
+ 
             self.current_label.config(text=f"Pašreizējais skaitlis: { self.gameManager.currentVal}")
             self.computer_score.config(text=f"Datora punkti: {self.gameManager.computer}")
             self.bank_score.config(text=f"Banka: {self.gameManager.Bank}")
-
+ 
             if(divisor == 2):
                 self.gameManager.currentWay.append('L')
             else:
                 self.gameManager.currentWay.append('R')
-
+ 
             self.gameManager.observe()
             TreeVisualization.Output_tree(self.gameManager.Tree,self.gameManager.currentVal)
             self.canvas.draw()
@@ -195,6 +202,7 @@ class GameSetupWindow(tk.Tk):
         else:
             self.end_game()
         pass
+
     def end_game(self):
         self.game_over = True
         winner = "Spēlētājs" if self.gameManager.player > self.gameManager.computer else "Dators" if self.gameManager.computer > self.gameManager.player else "Neizšķirts"
